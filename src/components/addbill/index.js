@@ -5,8 +5,7 @@ import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined
 import TextField from '@mui/material/TextField';
 import Autocomplete from'@mui/material/Autocomplete';
 //for date
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider'; 
+
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 //import days from 'days';
 
@@ -20,17 +19,17 @@ return (<div>
 <Stack gap={2}
 className="col-md-9 offset-1">
  <div className=" d-flex justify-content-start">
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
+    
     <DatePicker
     label="Basic example" 
-    inputFormat="DD-MM-yyyy"
+    inputFormat="DD-MM-YYYY"
     value={datevalue}
     onChange={ (newValue) => {
     setDatevalue (newValue);
     }}
     renderInput={ (params) => <TextField {...params} />}
     />
-    </LocalizationProvider></div> 
+    </div> 
     
 <Autocomplete
 disablePortal
