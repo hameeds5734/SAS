@@ -1,0 +1,30 @@
+
+.card-wh{
+  width:18rem !important;
+  height:9rem !important;
+  text-align: center;
+}
+
+.center{
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  
+}
+
+.setmar{
+  margin-left:3%;
+}
+.bor{
+  border:1px solid black;
+}
+.scroll-bar{
+  height:260px;
+  overflow:auto;
+}
+.fix{
+  position:relative;
+}
+
+
+
