@@ -8,6 +8,8 @@ import TabPanel from '@mui/lab/TabPanel';
 import TextField from"@mui/material/TextField";
 import Autocomplete from'@mui/material/Autocomplete';
 import {Row, Col,Stack,Form, Button, Container} from "react-bootstrap";
+import { DataGrid } from '@mui/x-data-grid';
+
 
 const AddCustomer=()=>{ return (<div>
 <h2>Add Customer</h2> 
@@ -15,7 +17,10 @@ const AddCustomer=()=>{ return (<div>
 <Box sx={{width:400,height:300}} >
 <Stack gap={3} className='mt-3'>
 <TextField label="Name" id="outlined-size-small" size="small"/>
-<TextField label="Place" id="outlined-size-small" size="small"/>
+<Autocomplete disablePortal id="combo-box-demo" options=
+{['ss','ess', 'dsss', 'ass']}
+sx={{ width: 400}} size="small" renderInput={(params) =>
+<TextField {...params} label= "Place" />}/>
 <TextField label="Phone" id="outlined-size-small" size="small"/>
 <div><Stack gap={3}
 className="-flex justify-content-center"direction="horizontal">
@@ -114,6 +119,62 @@ variant="danger">delete</Button>
 </Box> </div>
 </div>)
 }
+const columns = [
+    { field: 'name', headerName: 'Id', width: 180, editable: true },
+    {
+      field: 'age',
+      headerName: 'place',
+      type: 'number',
+      editable: true,
+      align: 'left',
+      headerAlign: 'left',
+    },
+   
+  ];
+  const rows = [
+    {
+      id: 1,
+      age: 25,
+      name:'a'
+    },
+    {
+      id: 2,
+      age: 36,
+      name:'b'
+    },
+    {
+      id: 3,
+      age: 19,
+      name:'c'
+    },
+    {
+      id: 4,
+      age: 28,
+      name:'a'
+    },
+    {
+      id: 5,
+      age: 23,
+      name:'a'
+    },
+  ];
+  
+const AddPlace=()=>{
+    return (<div>
+    <h2>Add Plaace</h2> <div className="d-flex justify-content-
+    center"><Box sx={{width:700,height:100}} >
+    <div className='mt-3 row'>
+    <TextField className="col-md-8" label="Base Product" id="outlined-size-small" size="small"/>
+    <Button
+    variant="success"className="col-md-3 offset-1">Add</Button>
+    </div>
+    </Box> </div>
+    <hr></hr>
+    <div  className='d-flex justify-content-center'>
+      <div style={{ height: 300, width: '60%' }}><DataGrid rows={rows} columns={columns} /></div>
+    </div>
+    </div>)
+    }
 
 const AccountCreation=()=>{
 const [value, setValue] =React.useState ('1');
@@ -131,8 +192,8 @@ label="lab API tabs example">
 <Tab label="Add Customer" value="1" />
 <Tab label="Edit Customer" value="2"/>
 <Tab label="Add Product" value="3" />
-<Tab label="Edit Product" value="4"
-/>
+<Tab label="Edit Product" value="4"/>
+<Tab label="Add  Place" value="5"/>
 </TabList>
 </Box>
 
@@ -140,6 +201,7 @@ label="lab API tabs example">
 <TabPanel value="2"><EditCustomer/></TabPanel>
 <TabPanel value="3"><AddProduct/></TabPanel>
 <TabPanel value="4"><EditProduct /></TabPanel>
+<TabPanel value="5"><AddPlace/></TabPanel>
 </TabContext>
 </Box>
 <div className="mt-3 container">
