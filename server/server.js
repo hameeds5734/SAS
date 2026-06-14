@@ -13,6 +13,7 @@ app.use('/api/products', require('./routes/products'));
 app.use('/api/bills', require('./routes/bills'));
 app.use('/api/payments', require('./routes/payments'));
 app.use('/api/reports', require('./routes/reports'));
+app.use('/api/admin', require('./routes/admin'));
 
 app.get('/api/health', (req, res) => res.json({ status: 'ok' }));
 

@@ -2,6 +2,21 @@ import axios from 'axios';
 
 const API = axios.create({ baseURL: 'http://localhost:5000/api' });
 
+export const adminApi = {
+  backup: () => API.post('/admin/backup'),
+  listBackups: () => API.get('/admin/backups'),
+  previewRestore: (file) => API.post('/admin/preview-restore', file, {
+    headers: { 'Content-Type': 'application/octet-stream' },
+    maxContentLength: Infinity,
+    maxBodyLength: Infinity,
+  }),
+  restore: (file) => API.post('/admin/restore', file, {
+    headers: { 'Content-Type': 'application/octet-stream' },
+    maxContentLength: Infinity,
+    maxBodyLength: Infinity,
+  }),
+};
+
 export const placesApi = {
   getAll: () => API.get('/places'),
   create: (data) => API.post('/places', data),

@@ -22,3 +22,10 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# SQLite database + WAL/SHM sidecars
+/server/sas_accounts.db
+/server/sas_accounts.db-journal
+/server/sas_accounts.db-wal
+/server/sas_accounts.db-shm
+/server/backups/
