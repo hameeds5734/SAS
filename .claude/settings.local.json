@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node -e \"require\\('@babel/parser'\\).parse\\(require\\('fs'\\).readFileSync\\('src/components/balance/index.js','utf8'\\),{sourceType:'module',plugins:['jsx']}\\);console.log\\('balance OK'\\)\")"
+    ]
+  }
+}

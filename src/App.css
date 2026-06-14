@@ -1,34 +1,55 @@
-
-.card-wh{
-  width:18rem !important;
-  height:9rem !important;
-  text-align: center;
+.App {
+  min-height: 100vh;
 }
 
-.center{
-  display:flex;
-  justify-content: center;
-  align-items: center;
-  
+/* Sidebar nav item hover */
+.nav-item-active {
+  background-color: rgba(255, 255, 255, 0.15) !important;
+  border-left: 3px solid #64b5f6 !important;
 }
 
-.setmar{
-  margin-left:3%;
+/* Bill items table */
+.bill-items-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
 }
-.bor{
-  border:1px solid black;
+.bill-items-table th {
+  background: #f0f4ff;
+  padding: 8px 10px;
+  text-align: left;
+  color: #1e3a5f;
+  font-weight: 600;
+  border-bottom: 2px solid #dde3f0;
+  position: sticky;
+  top: 0;
+  z-index: 1;
 }
-.scroll-bar{
-  height:260px;
-  overflow:auto;
+.bill-items-table td {
+  padding: 5px 8px;
+  border-bottom: 1px solid #eef0f6;
+  vertical-align: middle;
 }
-.fix{
-  position:relative;
+.bill-items-table tr:last-child td {
+  border-bottom: none;
 }
 
-.bgcolor_blue{
-  background-color: #4283ed;
+/* Summary box */
+.summary-box {
+  background: #f8f9ff;
+  border: 1px solid #dde3f0;
+  border-radius: 8px;
+  padding: 16px 24px;
 }
 
-
-
+/* Stat cards */
+.stat-card {
+  border-radius: 10px;
+  padding: 16px 20px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.stat-card .stat-label { font-size: 0.78rem; opacity: 0.85; font-weight: 500; }
+.stat-card .stat-value { font-size: 1.5rem; font-weight: 700; }

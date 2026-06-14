@@ -1,0 +1,63 @@
+-- SAS Accounts Database Schema
+-- Run this in phpMyAdmin: http://localhost/phpmyadmin
+-- Database: sas_accounts
+
+CREATE DATABASE IF NOT EXISTS sas_accounts CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE sas_accounts;
+
+CREATE TABLE IF NOT EXISTS places (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(100) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS customers (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(150) NOT NULL,
+  place_id INT DEFAULT NULL,
+  phone VARCHAR(20) DEFAULT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (place_id) REFERENCES places(id) ON DELETE SET NULL
+);
+
+CREATE TABLE IF NOT EXISTS products (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  base_product VARCHAR(100) NOT NULL,
+  sub_product VARCHAR(100) DEFAULT NULL,
+  price DECIMAL(10,2) DEFAULT 0.00,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS bills (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  bill_date DATE NOT NULL,
+  customer_id INT NOT NULL,
+  total_amount DECIMAL(10,2) DEFAULT 0.00,
+  paid_amount DECIMAL(10,2) DEFAULT 0.00,
+  balance DECIMAL(10,2) DEFAULT 0.00,
+  notes TEXT DEFAULT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (customer_id) REFERENCES customers(id)
+);
+
+CREATE TABLE IF NOT EXISTS bill_items (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  bill_id INT NOT NULL,
+  product_id INT DEFAULT NULL,
+  product_name VARCHAR(200) NOT NULL DEFAULT '',
+  quantity DECIMAL(10,3) DEFAULT 1.000,
+  rate DECIMAL(10,2) DEFAULT 0.00,
+  amount DECIMAL(10,2) DEFAULT 0.00,
+  FOREIGN KEY (bill_id) REFERENCES bills(id) ON DELETE CASCADE,
+  FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE SET NULL
+);
+
+CREATE TABLE IF NOT EXISTS payments (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  customer_id INT NOT NULL,
+  amount DECIMAL(10,2) NOT NULL,
+  payment_date DATE NOT NULL,
+  notes TEXT DEFAULT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (customer_id) REFERENCES customers(id)
+);

@@ -1,47 +1,38 @@
-import React,{Suspense} from 'react';
+import React, { Suspense, lazy } from 'react';
 import './App.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Home from './components';
-import Addbill from './components/addbill';
-import Navbar from 'react-bootstrap/Navbar';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Dashboard from './components/dashboard';
+import { ProgressSpinner } from 'primereact/progressspinner';
 
-//const Addbill=React.lazy(()=>import('./components/addbill'));
-const AcCreation=React.lazy(()=>import('./components/account-creation'));
-const Balance=React.lazy(()=>import('./components/balance'));
-const DtleDailySale=React.lazy(()=>import('./components/detailed-daily-sale'));
-const DtleViewBill=React.lazy(()=>import('./components/detailed-view-bill'));
-const EctDailySale=React.lazy(()=>import('./components/ect-daily-sale'));
-const ViewInvBill=React.lazy(()=>import('./components/view-inv-bill'));
+const Addbill = lazy(() => import('./components/addbill'));
+const AcCreation = lazy(() => import('./components/account-creation'));
+const Balance = lazy(() => import('./components/balance'));
+const Payments = lazy(() => import('./components/payments'));
+const ViewInvBill = lazy(() => import('./components/view-inv-bill'));
 
-function Loading() {
-  return <h2>🌀 Loading...</h2>;
+function PageLoader() {
+  return (
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '60vh' }}>
+      <ProgressSpinner style={{ width: 50, height: 50 }} />
+    </div>
+  );
 }
+
 function App() {
   return (
-    
-    <div className="App">
-      {/* <Navbar bg="light">
-        <Navbar.Brand className="setmar" href="#"><h3>Shop Name</h3></Navbar.Brand>
-      </Navbar>
-      <br></br> */}
-      <BrowserRouter>
-       <Routes>
-         <Route path="/" element={<Dashboard/>}>
-            <Route path='/addbill' element={<Addbill />}></Route>
-            <Route path="/ac" element={<Suspense fallback={<Loading />}> <AcCreation /> </Suspense>}></Route>
-            <Route path="/balance" element={<Suspense fallback={<Loading />}> <Balance/> </Suspense>}></Route>
-            <Route path="/dds" element={<Suspense fallback={<Loading />}> <DtleDailySale/> </Suspense>}></Route>
-            <Route path="/dvb" element={<Suspense fallback={<Loading />}> <DtleViewBill/> </Suspense>}></Route>
-            <Route path="/eds" element={<Suspense fallback={<Loading />}> <EctDailySale/></Suspense>}></Route>
-            <Route path="/vib" element={<Suspense fallback={<Loading />}> <ViewInvBill/> </Suspense>}></Route>  
-         </Route>
-       </Routes>
-      </BrowserRouter>
-      
-    </div>
-    
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Dashboard />}>
+          <Route index element={<Navigate to="/addbill" replace />} />
+          <Route path="addbill" element={<Suspense fallback={<PageLoader />}><Addbill /></Suspense>} />
+          <Route path="addbill/:id" element={<Suspense fallback={<PageLoader />}><Addbill /></Suspense>} />
+          <Route path="vib" element={<Suspense fallback={<PageLoader />}><ViewInvBill /></Suspense>} />
+          <Route path="ac" element={<Suspense fallback={<PageLoader />}><AcCreation /></Suspense>} />
+          <Route path="balance" element={<Suspense fallback={<PageLoader />}><Balance /></Suspense>} />
+          <Route path="payments" element={<Suspense fallback={<PageLoader />}><Payments /></Suspense>} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
