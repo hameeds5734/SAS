@@ -2,12 +2,35 @@
   box-sizing: border-box;
 }
 
+/* @font-face for Bamini lives in public/index.html so it can reference
+   the bundled font file at public/fonts/Bamini.ttf without webpack processing. */
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
   -webkit-font-smoothing: antialiased;
   background-color: #f0f2f5;
   color: #333;
+}
+
+/* Tamil mode (lang-ta on body):
+   - UI chrome (labels, headers, buttons) uses Unicode Tamil-capable system fonts.
+   - User-typed data (inputs + table cells where customer/product names live)
+     uses Bamini so the legacy phonetic typing flow keeps working. */
+body.lang-ta {
+  font-family: 'Latha', 'Nirmala UI', 'Noto Sans Tamil', 'Tamil Sangam MN', system-ui, sans-serif;
+}
+body.lang-ta input,
+body.lang-ta textarea,
+body.lang-ta .p-inputtext,
+body.lang-ta .p-dropdown-label,
+body.lang-ta .p-multiselect-label,
+body.lang-ta .p-autocomplete-input {
+  font-family: 'Bamini', 'Latha', 'Nirmala UI', system-ui, sans-serif;
+}
+/* Data cells in tables — these display what was typed (customer names, places, products) */
+body.lang-ta .p-datatable .p-datatable-tbody > tr > td {
+  font-family: 'Bamini', 'Latha', 'Nirmala UI', system-ui, sans-serif;
 }
 
 ::-webkit-scrollbar { width: 6px; height: 6px; }

@@ -3,14 +3,17 @@ import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { Button } from 'primereact/button';
 import { Toast } from 'primereact/toast';
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
+import { SelectButton } from 'primereact/selectbutton';
+import { useTranslation } from 'react-i18next';
 import { adminApi } from '../services/api';
+import { LANGS } from '../i18n';
 
-const NAV = [
-  { label: 'Add Bill',    icon: 'pi pi-plus-circle', path: '/addbill' },
-  { label: 'View Bills',  icon: 'pi pi-list',        path: '/vib' },
-  { label: 'Payments',    icon: 'pi pi-credit-card', path: '/payments' },
-  { label: 'Reports',     icon: 'pi pi-chart-bar',   path: '/balance' },
-  { label: 'Master Data', icon: 'pi pi-cog',         path: '/ac' },
+const NAV_KEYS = [
+  { key: 'add_bill',    icon: 'pi pi-plus-circle', path: '/addbill' },
+  { key: 'view_bills',  icon: 'pi pi-list',        path: '/vib' },
+  { key: 'payments',    icon: 'pi pi-credit-card', path: '/payments' },
+  { key: 'reports',     icon: 'pi pi-chart-bar',   path: '/balance' },
+  { key: 'master_data', icon: 'pi pi-cog',         path: '/ac' },
 ];
 
 export default function Dashboard() {
@@ -20,8 +23,10 @@ export default function Dashboard() {
   const fileInputRef = useRef(null);
   const [collapsed, setCollapsed] = useState(false);
   const [busy, setBusy] = useState(false);
+  const { t, i18n } = useTranslation();
 
-  const currentLabel = NAV.find(n => location.pathname === n.path || location.pathname.startsWith(n.path + '/'))?.label || 'Dashboard';
+  const NAV = NAV_KEYS.map(n => ({ ...n, label: t(`nav.${n.key}`) }));
+  const currentLabel = NAV.find(n => location.pathname === n.path || location.pathname.startsWith(n.path + '/'))?.label || t('app.name');
 
   const handleBackup = async () => {
     setBusy(true);
@@ -33,22 +38,22 @@ export default function Dashboard() {
       if (res.data.verified) {
         toast.current.show({
           severity: 'success',
-          summary: 'Backup created (verified)',
-          detail: `${res.data.filename} — ${kb} KB · contains ${totals}. Your live data is untouched.`,
+          summary: t('toasts.backup_created'),
+          detail: `${res.data.filename} — ${kb} KB · ${totals}`,
           life: 6000,
         });
       } else {
         toast.current.show({
           severity: 'warn',
-          summary: 'Backup created but counts differ',
-          detail: `${res.data.filename} — mismatched: ${res.data.mismatched.join(', ')}. Live data is unchanged.`,
+          summary: t('toasts.backup_created'),
+          detail: `${res.data.filename} — mismatched: ${res.data.mismatched.join(', ')}`,
           life: 9000,
         });
       }
     } catch (err) {
       toast.current.show({
         severity: 'error',
-        summary: 'Backup failed',
+        summary: t('toasts.backup_failed'),
         detail: err?.response?.data?.error || err.message,
       });
     } finally { setBusy(false); }
@@ -114,15 +119,15 @@ export default function Dashboard() {
       const res = await adminApi.restore(buf);
       toast.current.show({
         severity: 'success',
-        summary: 'Restore complete',
-        detail: `Pre-restore safety backup: ${res.data.preRestoreBackup}. Reloading…`,
+        summary: t('toasts.restore_complete'),
+        detail: `${res.data.preRestoreBackup}`,
         life: 3000,
       });
       setTimeout(() => window.location.reload(), 1200);
     } catch (err) {
       toast.current.show({
         severity: 'error',
-        summary: 'Restore failed',
+        summary: t('toasts.restore_failed'),
         detail: err?.response?.data?.error || err.message,
       });
       setBusy(false);
@@ -156,7 +161,7 @@ export default function Dashboard() {
           {!collapsed && (
             <span style={{ color: '#fff', fontWeight: 700, fontSize: 15, whiteSpace: 'nowrap' }}>
               <i className="pi pi-building" style={{ color: '#64b5f6', marginRight: 8 }} />
-              SAS Accounts
+              {t('app.name')}
             </span>
           )}
           <Button
@@ -204,7 +209,7 @@ export default function Dashboard() {
         {/* Footer */}
         {!collapsed && (
           <div style={{ padding: '12px 20px', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
-            <span style={{ color: 'rgba(255,255,255,0.3)', fontSize: 11 }}>SAS v1.0 • Local</span>
+            <span style={{ color: 'rgba(255,255,255,0.3)', fontSize: 11 }}>{t('app.brand_tagline')}</span>
           </div>
         )}
       </nav>
@@ -225,23 +230,34 @@ export default function Dashboard() {
           <i className="pi pi-angle-right" style={{ color: '#aaa', fontSize: 13 }} />
           <span style={{ color: '#1e3a5f', fontWeight: 600, fontSize: 15 }}>{currentLabel}</span>
 
-          <div style={{ marginLeft: 'auto', display: 'flex', gap: 8 }}>
+          <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 8 }}>
+            <SelectButton
+              value={i18n.language?.startsWith('ta') ? 'ta' : 'en'}
+              onChange={(e) => { if (e.value) i18n.changeLanguage(e.value); }}
+              options={LANGS.map(l => ({ label: l.label, value: l.code }))}
+              optionLabel="label"
+              optionValue="value"
+              allowEmpty={false}
+              pt={{ button: { style: { padding: '4px 10px', fontSize: 12, fontWeight: 600 } } }}
+              tooltip={t('topbar.language')}
+              tooltipOptions={{ position: 'bottom' }}
+            />
             <Button
-              label="Backup"
+              label={t('topbar.backup')}
               icon="pi pi-download"
               className="p-button-sm p-button-outlined"
               onClick={handleBackup}
               loading={busy}
-              tooltip="Save a copy of the current database into server/backups/"
+              tooltip={t('topbar.backup_tip')}
               tooltipOptions={{ position: 'bottom' }}
             />
             <Button
-              label="Restore"
+              label={t('topbar.restore')}
               icon="pi pi-upload"
               className="p-button-sm p-button-outlined p-button-warning"
               onClick={() => fileInputRef.current?.click()}
               disabled={busy}
-              tooltip="Replace the current database with a backup file"
+              tooltip={t('topbar.restore_tip')}
               tooltipOptions={{ position: 'bottom' }}
             />
             <input

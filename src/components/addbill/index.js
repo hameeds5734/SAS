@@ -7,7 +7,6 @@ import { InputNumber } from 'primereact/inputnumber';
 import { Dropdown } from 'primereact/dropdown';
 import { Calendar } from 'primereact/calendar';
 import { Toast } from 'primereact/toast';
-import { ConfirmDialog } from 'primereact/confirmdialog';
 import { AutoComplete } from 'primereact/autocomplete';
 import { Divider } from 'primereact/divider';
 import { billsApi, customersApi, productsApi } from '../../services/api';
@@ -172,7 +171,6 @@ export default function Addbill() {
   return (
     <div>
       <Toast ref={toast} />
-      <ConfirmDialog />
 
       <Card style={{ borderRadius: 10, boxShadow: '0 2px 10px rgba(0,0,0,0.08)' }}>
         {/* Header */}

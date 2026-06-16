@@ -8,7 +8,7 @@ import { InputText } from 'primereact/inputtext';
 import { Calendar } from 'primereact/calendar';
 import { Dropdown } from 'primereact/dropdown';
 import { Toast } from 'primereact/toast';
-import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
+import { confirmDialog } from 'primereact/confirmdialog';
 import { Tag } from 'primereact/tag';
 import { Dialog } from 'primereact/dialog';
 import { billsApi, customersApi, placesApi, paymentsApi } from '../../services/api';
@@ -194,7 +194,6 @@ export default function ViewInvBill() {
   return (
     <div>
       <Toast ref={toast} />
-      <ConfirmDialog />
 
       <Card style={{ borderRadius: 10, boxShadow: '0 2px 10px rgba(0,0,0,0.08)', marginBottom: 16 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16, flexWrap: 'wrap', gap: 12 }}>

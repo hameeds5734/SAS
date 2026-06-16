@@ -6,6 +6,7 @@ import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 import 'primeflex/primeflex.css';
 import './index.css';
+import './i18n';
 
 import App from './App';
 import reportWebVitals from './reportWebVitals';

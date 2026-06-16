@@ -1,0 +1,133 @@
+{
+  "app": {
+    "name": "SAS Accounts",
+    "brand_tagline": "v1.0 • Local"
+  },
+  "nav": {
+    "add_bill": "Add Bill",
+    "view_bills": "View Bills",
+    "payments": "Payments",
+    "reports": "Reports",
+    "master_data": "Master Data"
+  },
+  "topbar": {
+    "backup": "Backup",
+    "restore": "Restore",
+    "backup_tip": "Save a copy of the database in server/backups/",
+    "restore_tip": "Replace the database with a backup file",
+    "language": "Language"
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add",
+    "search": "Search",
+    "reset": "Reset",
+    "print": "Print",
+    "yes": "Yes",
+    "no": "No",
+    "ok": "OK",
+    "close": "Close",
+    "loading": "Loading...",
+    "no_data": "No data",
+    "actions": "Actions",
+    "view": "View",
+    "view_result": "View Result"
+  },
+  "fields": {
+    "customer": "Customer",
+    "customers": "Customers",
+    "place": "Place",
+    "places": "Places",
+    "product": "Product",
+    "products": "Products",
+    "base_product": "Base Product",
+    "base_products": "Base Products",
+    "sub_product": "Sub Product / Variant",
+    "phone": "Phone",
+    "name": "Name",
+    "date": "Date",
+    "from_date": "From Date",
+    "to_date": "To Date",
+    "rate": "Rate",
+    "quantity": "Qty",
+    "amount": "Amount",
+    "total": "Total",
+    "paid": "Paid",
+    "balance": "Balance",
+    "sale": "Sale",
+    "bill": "Bill",
+    "bill_id": "Bill #",
+    "notes": "Notes",
+    "default_price": "Default Price"
+  },
+  "addbill": {
+    "title": "New Bill",
+    "edit_title": "Edit Bill",
+    "select_customer": "Select customer",
+    "select_product": "Select product",
+    "product_placeholder": "Type or pick a product",
+    "add_item": "Add Item",
+    "bill_date": "Bill Date",
+    "save_bill": "Save Bill",
+    "no_items": "No items added yet"
+  },
+  "payments": {
+    "title": "Record Payment",
+    "edit_title": "Edit Payment",
+    "all_payments": "All Payments",
+    "payment_date": "Payment Date",
+    "record": "Record",
+    "update": "Update"
+  },
+  "viewbills": {
+    "title": "All Bills",
+    "new_bill": "New Bill",
+    "statement": "Statement",
+    "search_placeholder": "Search name / place...",
+    "all_customers": "All customers",
+    "all_places": "All places",
+    "from_date": "From date",
+    "to_date": "To date",
+    "clear": "Clear",
+    "bills_count": "Bills"
+  },
+  "masterdata": {
+    "title": "Master Data",
+    "subtitle": "Manage customers, base products, products and places",
+    "add_place": "Add Place",
+    "add_customer": "Add Customer",
+    "add_product": "Add Product",
+    "add_base_product": "Add Base Product"
+  },
+  "reports": {
+    "title": "Reports",
+    "subtitle": "Filter and view bill / balance reports",
+    "bill_report": "Bill Report",
+    "customer_balance": "Customer Balance",
+    "customer_sale": "Customer Sale",
+    "sale_summary": "Sale Summary",
+    "daily_sale": "Daily Sale",
+    "product_sale": "Product Sale",
+    "payment_entries": "Payment Entries",
+    "generate": "Generate Statement",
+    "detailed_view": "Detailed view — expand each sale date into its bill items",
+    "filters": "Filters",
+    "day_total": "Day Total",
+    "grand_total": "TOTAL"
+  },
+  "toasts": {
+    "saved": "Saved",
+    "deleted": "Deleted",
+    "updated": "Updated",
+    "error": "Error",
+    "required": "Required",
+    "operation_failed": "Operation failed",
+    "backup_created": "Backup created",
+    "backup_failed": "Backup failed",
+    "restore_complete": "Restore complete",
+    "restore_failed": "Restore failed"
+  }
+}

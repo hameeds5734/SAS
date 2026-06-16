@@ -1,0 +1,133 @@
+{
+  "app": {
+    "name": "SAS கணக்கு",
+    "brand_tagline": "v1.0 • உள்ளக"
+  },
+  "nav": {
+    "add_bill": "புதிய பில்",
+    "view_bills": "பில்கள்",
+    "payments": "வரவு",
+    "reports": "அறிக்கைகள்",
+    "master_data": "முதன்மை தரவு"
+  },
+  "topbar": {
+    "backup": "காப்பு",
+    "restore": "மீட்டமை",
+    "backup_tip": "தரவுத்தளத்தின் நகலை server/backups/ இல் சேமி",
+    "restore_tip": "காப்புக் கோப்பிலிருந்து தரவுத்தளத்தை மாற்று",
+    "language": "மொழி"
+  },
+  "common": {
+    "save": "சேமி",
+    "cancel": "ரத்து",
+    "delete": "நீக்கு",
+    "edit": "திருத்து",
+    "add": "சேர்",
+    "search": "தேடு",
+    "reset": "மீட்டமை",
+    "print": "அச்சு",
+    "yes": "ஆம்",
+    "no": "இல்லை",
+    "ok": "சரி",
+    "close": "மூடு",
+    "loading": "ஏற்றுகிறது...",
+    "no_data": "தரவு இல்லை",
+    "actions": "செயல்கள்",
+    "view": "காண்",
+    "view_result": "முடிவு காண்"
+  },
+  "fields": {
+    "customer": "வாடிக்கையாளர்",
+    "customers": "வாடிக்கையாளர்கள்",
+    "place": "இடம்",
+    "places": "இடங்கள்",
+    "product": "பொருள்",
+    "products": "பொருட்கள்",
+    "base_product": "அடிப்படை பொருள்",
+    "base_products": "அடிப்படை பொருட்கள்",
+    "sub_product": "உப பொருள் / வகை",
+    "phone": "தொலைபேசி",
+    "name": "பெயர்",
+    "date": "தேதி",
+    "from_date": "தொடக்க தேதி",
+    "to_date": "முடிவு தேதி",
+    "rate": "விலை",
+    "quantity": "எண்",
+    "amount": "தொகை",
+    "total": "மொத்தம்",
+    "paid": "வரவு",
+    "balance": "பாக்கி",
+    "sale": "பற்று",
+    "bill": "பில்",
+    "bill_id": "பில் எண்",
+    "notes": "குறிப்பு",
+    "default_price": "இயல்பு விலை"
+  },
+  "addbill": {
+    "title": "புதிய பில்",
+    "edit_title": "பில் திருத்து",
+    "select_customer": "வாடிக்கையாளரை தேர்வு",
+    "select_product": "பொருளை தேர்வு",
+    "product_placeholder": "பொருளை தட்டச்சு / தேர்வு",
+    "add_item": "சேர்",
+    "bill_date": "பில் தேதி",
+    "save_bill": "பில் சேமி",
+    "no_items": "பொருள் சேர்க்கப்படவில்லை"
+  },
+  "payments": {
+    "title": "வரவு பதிவு",
+    "edit_title": "வரவு திருத்து",
+    "all_payments": "அனைத்து வரவுகள்",
+    "payment_date": "வரவு தேதி",
+    "record": "பதிவு",
+    "update": "புதுப்பி"
+  },
+  "viewbills": {
+    "title": "அனைத்து பில்கள்",
+    "new_bill": "புதிய பில்",
+    "statement": "கணக்கு",
+    "search_placeholder": "பெயர் / இடம் தேடு...",
+    "all_customers": "அனைத்து வாடிக்கையாளர்கள்",
+    "all_places": "அனைத்து இடங்கள்",
+    "from_date": "தொடக்க தேதி",
+    "to_date": "முடிவு தேதி",
+    "clear": "அழி",
+    "bills_count": "பில்கள்"
+  },
+  "masterdata": {
+    "title": "முதன்மை தரவு",
+    "subtitle": "வாடிக்கையாளர், பொருள், இடம் நிர்வாகம்",
+    "add_place": "இடம் சேர்",
+    "add_customer": "வாடிக்கையாளர் சேர்",
+    "add_product": "பொருள் சேர்",
+    "add_base_product": "அடிப்படை பொருள் சேர்"
+  },
+  "reports": {
+    "title": "அறிக்கைகள்",
+    "subtitle": "பில் / பாக்கி அறிக்கைகள்",
+    "bill_report": "பில் அறிக்கை",
+    "customer_balance": "வாடிக்கையாளர் பாக்கி",
+    "customer_sale": "வாடிக்கையாளர் விற்பனை",
+    "sale_summary": "விற்பனை சுருக்கம்",
+    "daily_sale": "தினசரி விற்பனை",
+    "product_sale": "பொருள் விற்பனை",
+    "payment_entries": "வரவு பதிவுகள்",
+    "generate": "அறிக்கை உருவாக்கு",
+    "detailed_view": "விரிவான பார்வை — ஒவ்வொரு தேதியின் பொருட்களை காட்டு",
+    "filters": "வடிகட்டிகள்",
+    "day_total": "தின மொத்தம்",
+    "grand_total": "மொத்தம்"
+  },
+  "toasts": {
+    "saved": "சேமிக்கப்பட்டது",
+    "deleted": "நீக்கப்பட்டது",
+    "updated": "புதுப்பிக்கப்பட்டது",
+    "error": "பிழை",
+    "required": "தேவை",
+    "operation_failed": "செயல் தோல்வி",
+    "backup_created": "காப்பு உருவாக்கப்பட்டது",
+    "backup_failed": "காப்பு தோல்வி",
+    "restore_complete": "மீட்பு முடிந்தது",
+    "restore_failed": "மீட்பு தோல்வி"
+  }
+}

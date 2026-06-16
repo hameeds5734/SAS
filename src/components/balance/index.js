@@ -8,9 +8,9 @@ import { Checkbox } from 'primereact/checkbox';
 import { Dialog } from 'primereact/dialog';
 import { Toast } from 'primereact/toast';
 import { TabView, TabPanel } from 'primereact/tabview';
+import { useTranslation } from 'react-i18next';
 import { reportsApi, placesApi, customersApi, baseProductsApi } from '../../services/api';
 
-const fmt = (v) => `₹ ${parseFloat(v || 0).toFixed(2)}`;
 const fmtQty = (q) => {
   const n = parseFloat(q) || 0;
   return Number.isInteger(n) ? String(n) : n.toFixed(2).replace(/\.?0+$/, '');
@@ -856,7 +856,6 @@ function SaleSummaryReport({ bills, fromDate, toDate }) {
     return a.id - b.id;
   });
 
-  const grandQty = bills.reduce((s, b) => s + parseFloat(b.total_qty || 0), 0);
   const grandAmt = bills.reduce((s, b) => s + parseFloat(b.total_amount || 0), 0);
 
   return (
@@ -1350,8 +1349,6 @@ function ProductSale() {
 }
 
 function ProductSaleReport({ rows, fromDate, toDate, showDetail }) {
-  const round = (v) => Math.round(parseFloat(v || 0)).toLocaleString('en-IN');
-
   // Group rows by base_product preserving sorted order from the server.
   const groups = useMemo(() => {
     const map = new Map();
@@ -1580,23 +1577,24 @@ function PaymentEntries() {
 
 // ─── Main ─────────────────────────────────────────────────────────────────────
 export default function Balance() {
+  const { t } = useTranslation();
   return (
     <div>
       <div style={{ marginBottom: 16 }}>
         <h2 style={{ margin: 0, color: '#1e3a5f', fontSize: 20, fontWeight: 700 }}>
           <i className="pi pi-chart-bar" style={{ marginRight: 10, color: '#2196f3' }} />
-          Reports
+          {t('reports.title')}
         </h2>
-        <p style={{ color: '#888', fontSize: 13, marginTop: 4, marginBottom: 0 }}>Filter and view bill / balance reports</p>
+        <p style={{ color: '#888', fontSize: 13, marginTop: 4, marginBottom: 0 }}>{t('reports.subtitle')}</p>
       </div>
       <TabView>
-        <TabPanel header={<span><i className="pi pi-file" style={{ marginRight: 6 }} />sale paid Report</span>}><BillReport /></TabPanel>
-        <TabPanel header={<span><i className="pi pi-wallet" style={{ marginRight: 6 }} />Customer Balance</span>}><CustomerBalance /></TabPanel>
-        <TabPanel header={<span><i className="pi pi-shopping-cart" style={{ marginRight: 6 }} />Customer Sale</span>}><CustomerSale /></TabPanel>
-        <TabPanel header={<span><i className="pi pi-receipt" style={{ marginRight: 6 }} />Sale Summary</span>}><SaleSummary /></TabPanel>
-        <TabPanel header={<span><i className="pi pi-calendar-plus" style={{ marginRight: 6 }} />Daily Sale</span>}><DailySale /></TabPanel>
-        <TabPanel header={<span><i className="pi pi-box" style={{ marginRight: 6 }} />Product Sale</span>}><ProductSale /></TabPanel>
-        <TabPanel header={<span><i className="pi pi-credit-card" style={{ marginRight: 6 }} />Payment Entries</span>}><PaymentEntries /></TabPanel>
+        <TabPanel header={<span><i className="pi pi-file" style={{ marginRight: 6 }} />{t('reports.bill_report')}</span>}><BillReport /></TabPanel>
+        <TabPanel header={<span><i className="pi pi-wallet" style={{ marginRight: 6 }} />{t('reports.customer_balance')}</span>}><CustomerBalance /></TabPanel>
+        <TabPanel header={<span><i className="pi pi-shopping-cart" style={{ marginRight: 6 }} />{t('reports.customer_sale')}</span>}><CustomerSale /></TabPanel>
+        <TabPanel header={<span><i className="pi pi-receipt" style={{ marginRight: 6 }} />{t('reports.sale_summary')}</span>}><SaleSummary /></TabPanel>
+        <TabPanel header={<span><i className="pi pi-calendar-plus" style={{ marginRight: 6 }} />{t('reports.daily_sale')}</span>}><DailySale /></TabPanel>
+        <TabPanel header={<span><i className="pi pi-box" style={{ marginRight: 6 }} />{t('reports.product_sale')}</span>}><ProductSale /></TabPanel>
+        <TabPanel header={<span><i className="pi pi-credit-card" style={{ marginRight: 6 }} />{t('reports.payment_entries')}</span>}><PaymentEntries /></TabPanel>
       </TabView>
     </div>
   );

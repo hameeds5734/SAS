@@ -8,8 +8,9 @@ import { InputNumber } from 'primereact/inputnumber';
 import { Dropdown } from 'primereact/dropdown';
 import { Dialog } from 'primereact/dialog';
 import { Toast } from 'primereact/toast';
-import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
+import { confirmDialog } from 'primereact/confirmdialog';
 import { Card } from 'primereact/card';
+import { useTranslation } from 'react-i18next';
 import { customersApi, productsApi, placesApi, baseProductsApi } from '../../services/api';
 
 // ─── Places Tab ───────────────────────────────────────────────────────────────
@@ -350,21 +351,21 @@ function ProductsTab() {
 
 // ─── Main ─────────────────────────────────────────────────────────────────────
 export default function AccountCreation() {
+  const { t } = useTranslation();
   return (
     <Card style={{ borderRadius: 10, boxShadow: '0 2px 10px rgba(0,0,0,0.08)' }}>
-      <ConfirmDialog />
       <div style={{ marginBottom: 12 }}>
         <h2 style={{ margin: 0, color: '#1e3a5f', fontSize: 20, fontWeight: 700 }}>
           <i className="pi pi-cog" style={{ marginRight: 10, color: '#2196f3' }} />
-          Master Data
+          {t('masterdata.title')}
         </h2>
-        <p style={{ color: '#888', fontSize: 13, marginTop: 4, marginBottom: 0 }}>Manage customers, base products, products and places</p>
+        <p style={{ color: '#888', fontSize: 13, marginTop: 4, marginBottom: 0 }}>{t('masterdata.subtitle')}</p>
       </div>
       <TabView>
-        <TabPanel header={<span><i className="pi pi-users" style={{ marginRight: 6 }} />Customers</span>}><CustomersTab /></TabPanel>
-        <TabPanel header={<span><i className="pi pi-tag" style={{ marginRight: 6 }} />Base Products</span>}><BaseProductsTab /></TabPanel>
-        <TabPanel header={<span><i className="pi pi-box" style={{ marginRight: 6 }} />Products</span>}><ProductsTab /></TabPanel>
-        <TabPanel header={<span><i className="pi pi-map-marker" style={{ marginRight: 6 }} />Places</span>}><PlacesTab /></TabPanel>
+        <TabPanel header={<span><i className="pi pi-users" style={{ marginRight: 6 }} />{t('fields.customers')}</span>}><CustomersTab /></TabPanel>
+        <TabPanel header={<span><i className="pi pi-tag" style={{ marginRight: 6 }} />{t('fields.base_products')}</span>}><BaseProductsTab /></TabPanel>
+        <TabPanel header={<span><i className="pi pi-box" style={{ marginRight: 6 }} />{t('fields.products')}</span>}><ProductsTab /></TabPanel>
+        <TabPanel header={<span><i className="pi pi-map-marker" style={{ marginRight: 6 }} />{t('fields.places')}</span>}><PlacesTab /></TabPanel>
       </TabView>
     </Card>
   );

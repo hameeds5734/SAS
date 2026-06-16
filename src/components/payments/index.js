@@ -7,7 +7,7 @@ import { Calendar } from 'primereact/calendar';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Toast } from 'primereact/toast';
-import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
+import { confirmDialog } from 'primereact/confirmdialog';
 import { Divider } from 'primereact/divider';
 import { paymentsApi, customersApi } from '../../services/api';
 
@@ -136,7 +136,6 @@ export default function Payments() {
   return (
     <div>
       <Toast ref={toast} />
-      <ConfirmDialog />
 
       <Card style={{ borderRadius: 10, boxShadow: '0 2px 10px rgba(0,0,0,0.08)', marginBottom: 20 }}>
         <h2 style={{ margin: '0 0 16px 0', color: '#1e3a5f', fontSize: 20, fontWeight: 700 }}>
