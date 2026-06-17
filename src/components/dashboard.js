@@ -159,10 +159,23 @@ export default function Dashboard() {
           gap: 8,
         }}>
           {!collapsed && (
-            <span style={{ color: '#fff', fontWeight: 700, fontSize: 15, whiteSpace: 'nowrap' }}>
-              <i className="pi pi-building" style={{ color: '#64b5f6', marginRight: 8 }} />
+            <span style={{ color: '#fff', fontWeight: 700, fontSize: 15, whiteSpace: 'nowrap', display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+              <img
+                src={`${process.env.PUBLIC_URL}/logo.png`}
+                alt="SAS"
+                style={{ height: 26, width: 'auto', background: '#fff', borderRadius: 4, padding: 2 }}
+                onError={(e) => { e.currentTarget.style.display = 'none'; }}
+              />
               {t('app.name')}
             </span>
+          )}
+          {collapsed && (
+            <img
+              src={`${process.env.PUBLIC_URL}/logo.png`}
+              alt="SAS"
+              style={{ height: 28, width: 'auto', background: '#fff', borderRadius: 4, padding: 2 }}
+              onError={(e) => { e.currentTarget.style.display = 'none'; }}
+            />
           )}
           <Button
             icon={collapsed ? 'pi pi-angle-right' : 'pi pi-angle-left'}

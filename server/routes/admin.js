@@ -6,7 +6,8 @@ const dbModule = require('../db');
 
 const router = express.Router();
 
-const BACKUP_DIR = path.join(__dirname, '..', 'backups');
+// Electron sets SAS_BACKUP_DIR to a writable user folder; otherwise default to ../backups.
+const BACKUP_DIR = process.env.SAS_BACKUP_DIR || path.join(__dirname, '..', 'backups');
 if (!fs.existsSync(BACKUP_DIR)) fs.mkdirSync(BACKUP_DIR, { recursive: true });
 
 const stamp = () => {

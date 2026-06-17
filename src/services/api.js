@@ -1,6 +1,10 @@
 import axios from 'axios';
 
-const API = axios.create({ baseURL: 'http://localhost:5000/api' });
+// Relative baseURL — resolves to the same origin that served the page:
+//   - Electron desktop:  http://localhost:5000/api
+//   - Phone on Wi-Fi:    http://192.168.x.x:5000/api
+//   - CRA dev (npm start): forwarded to localhost:5000 via package.json "proxy"
+const API = axios.create({ baseURL: process.env.REACT_APP_API_URL || '/api' });
 
 export const adminApi = {
   backup: () => API.post('/admin/backup'),

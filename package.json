@@ -1,29 +1,52 @@
 {
-  "name": "sas",
-  "version": "0.1.0",
+  "name": "sas-accounts",
+  "version": "1.0.0",
+  "description": "SAS Wholesale Accounts — offline desktop app",
+  "author": "SAS",
   "private": true,
+  "main": "electron/main.js",
+  "homepage": "./",
+  "proxy": "http://localhost:5000",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.6.8",
+    "better-sqlite3": "^11.10.0",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
     "i18next": "^23.15.1",
     "i18next-browser-languagedetector": "^7.2.1",
-    "react-i18next": "^13.5.0",
     "primeicons": "^7.0.0",
     "primereact": "^10.8.0",
     "primeflex": "^3.3.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-i18next": "^13.5.0",
     "react-router-dom": "^6.6.1",
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.21",
+    "concurrently": "^8.2.2",
+    "cross-env": "^7.0.3",
+    "electron": "^32.2.0",
+    "electron-builder": "^25.1.8",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^3.3.3",
+    "wait-on": "^7.2.0"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "server": "node server/server.js",
+    "electron": "electron .",
+    "electron:dev": "concurrently -k \"cross-env BROWSER=none npm start\" \"npm run server\" \"wait-on http://localhost:3000 http://localhost:5000/api/health && cross-env ELECTRON_DEV=1 electron .\"",
+    "dist": "npm run build && electron-builder",
+    "dist:win": "npm run build && electron-builder --win nsis",
+    "postinstall": "electron-builder install-app-deps"
   },
   "eslintConfig": {
     "extends": [
@@ -43,9 +66,50 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {
-    "autoprefixer": "^10.4.21",
-    "postcss": "^8.5.6",
-    "tailwindcss": "^3.3.3"
+  "build": {
+    "appId": "com.sas.accounts",
+    "productName": "SAS Accounts",
+    "copyright": "Copyright © 2026 SAS",
+    "directories": {
+      "output": "dist",
+      "buildResources": "electron"
+    },
+    "files": [
+      "electron/**/*",
+      "server/**/*",
+      "build/**/*",
+      "package.json",
+      "!server/sas_accounts.db",
+      "!server/sas_accounts.db-*",
+      "!server/backups/**",
+      "!server/node_modules/.cache/**",
+      "!**/*.{md,log,test.js,spec.js}"
+    ],
+    "asar": true,
+    "asarUnpack": [
+      "node_modules/better-sqlite3/**/*",
+      "node_modules/bindings/**/*",
+      "node_modules/file-uri-to-path/**/*"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        }
+      ],
+      "icon": "electron/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "SAS Accounts"
+    },
+    "extraMetadata": {
+      "main": "electron/main.js"
+    }
   }
 }
