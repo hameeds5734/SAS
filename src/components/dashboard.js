@@ -1,11 +1,11 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { Button } from 'primereact/button';
 import { Toast } from 'primereact/toast';
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
 import { SelectButton } from 'primereact/selectbutton';
 import { useTranslation } from 'react-i18next';
-import { adminApi } from '../services/api';
+import { adminApi, networkApi } from '../services/api';
 import { LANGS } from '../i18n';
 
 const NAV_KEYS = [
@@ -22,8 +22,30 @@ export default function Dashboard() {
   const toast = useRef(null);
   const fileInputRef = useRef(null);
   const [collapsed, setCollapsed] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const [busy, setBusy] = useState(false);
   const { t, i18n } = useTranslation();
+
+  const [lanUrl, setLanUrl] = useState('');
+
+  // Auto-close the mobile drawer whenever the route changes — this avoids
+  // calling setState + navigate together in the same handler, which can race
+  // with React's render batching on desktop and leave the Outlet empty.
+  useEffect(() => { setMobileOpen(false); }, [location.pathname]);
+
+  // Fetch the host's LAN URL once, so the footer can show it for phone access.
+  useEffect(() => {
+    networkApi.getInfo()
+      .then(res => { if (res.data?.urls?.length) setLanUrl(res.data.urls[0]); })
+      .catch(() => { /* not critical */ });
+  }, []);
+
+  const copyLanUrl = () => {
+    if (!lanUrl) return;
+    navigator.clipboard?.writeText(lanUrl).then(() => {
+      toast.current?.show({ severity: 'success', summary: 'Copied', detail: lanUrl, life: 2000 });
+    }).catch(() => {});
+  };
 
   const NAV = NAV_KEYS.map(n => ({ ...n, label: t(`nav.${n.key}`) }));
   const currentLabel = NAV.find(n => location.pathname === n.path || location.pathname.startsWith(n.path + '/'))?.label || t('app.name');
@@ -136,18 +158,26 @@ export default function Dashboard() {
 
   return (
     <div style={{ display: 'flex', height: '100vh', overflow: 'hidden' }}>
+      {/* Mobile backdrop — only visible on mobile when drawer is open */}
+      <div
+        className={`sidebar-backdrop${mobileOpen ? ' is-open' : ''}`}
+        onClick={() => setMobileOpen(false)}
+      />
+
       {/* Sidebar */}
-      <nav style={{
-        width: collapsed ? 60 : 220,
-        minWidth: collapsed ? 60 : 220,
-        backgroundColor: '#1e3a5f',
-        display: 'flex',
-        flexDirection: 'column',
-        transition: 'width 0.2s ease',
-        overflow: 'hidden',
-        boxShadow: '2px 0 8px rgba(0,0,0,0.18)',
-        zIndex: 100,
-      }}>
+      <nav
+        className={`sidebar${mobileOpen ? ' is-open' : ''}`}
+        style={{
+          width: collapsed ? 60 : 220,
+          minWidth: collapsed ? 60 : 220,
+          backgroundColor: '#1e3a5f',
+          display: 'flex',
+          flexDirection: 'column',
+          transition: 'width 0.2s ease',
+          overflow: 'hidden',
+          boxShadow: '2px 0 8px rgba(0,0,0,0.18)',
+          zIndex: 100,
+        }}>
         {/* Brand */}
         <div style={{
           height: 58,
@@ -193,6 +223,8 @@ export default function Dashboard() {
               <div
                 key={item.path}
                 title={collapsed ? item.label : ''}
+                role="button"
+                tabIndex={0}
                 onClick={() => navigate(item.path)}
                 style={{
                   display: 'flex',
@@ -221,8 +253,28 @@ export default function Dashboard() {
 
         {/* Footer */}
         {!collapsed && (
-          <div style={{ padding: '12px 20px', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
-            <span style={{ color: 'rgba(255,255,255,0.3)', fontSize: 11 }}>{t('app.brand_tagline')}</span>
+          <div style={{ padding: '10px 16px', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+            <div style={{ color: 'rgba(255,255,255,0.32)', fontSize: 11 }}>{t('app.brand_tagline')}</div>
+            {lanUrl && (
+              <div
+                onClick={copyLanUrl}
+                title="Click to copy"
+                style={{
+                  marginTop: 4,
+                  color: 'rgba(255,255,255,0.78)',
+                  fontSize: 11,
+                  fontFamily: 'Consolas, "Courier New", monospace',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 6,
+                  wordBreak: 'break-all',
+                }}
+              >
+                <i className="pi pi-mobile" style={{ fontSize: 12, color: '#64b5f6' }} />
+                <span>{lanUrl}</span>
+              </div>
+            )}
           </div>
         )}
       </nav>
@@ -230,7 +282,7 @@ export default function Dashboard() {
       {/* Main area */}
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', backgroundColor: '#f0f2f5' }}>
         {/* Topbar */}
-        <header style={{
+        <header className="topbar" style={{
           height: 58,
           backgroundColor: '#fff',
           borderBottom: '1px solid #e0e6f0',
@@ -240,10 +292,17 @@ export default function Dashboard() {
           boxShadow: '0 1px 4px rgba(0,0,0,0.06)',
           gap: 10,
         }}>
+          {/* Hamburger — CSS-hidden on desktop, shown on mobile */}
+          <Button
+            icon="pi pi-bars"
+            className="mobile-hamburger p-button-text p-button-rounded p-button-sm"
+            style={{ color: '#1e3a5f', padding: 6 }}
+            onClick={() => setMobileOpen(o => !o)}
+          />
           <i className="pi pi-angle-right" style={{ color: '#aaa', fontSize: 13 }} />
           <span style={{ color: '#1e3a5f', fontWeight: 600, fontSize: 15 }}>{currentLabel}</span>
 
-          <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 8 }}>
+          <div className="topbar-actions" style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 8 }}>
             <SelectButton
               value={i18n.language?.startsWith('ta') ? 'ta' : 'en'}
               onChange={(e) => { if (e.value) i18n.changeLanguage(e.value); }}
@@ -258,7 +317,7 @@ export default function Dashboard() {
             <Button
               label={t('topbar.backup')}
               icon="pi pi-download"
-              className="p-button-sm p-button-outlined"
+              className="p-button-sm p-button-outlined topbar-btn"
               onClick={handleBackup}
               loading={busy}
               tooltip={t('topbar.backup_tip')}
@@ -267,7 +326,7 @@ export default function Dashboard() {
             <Button
               label={t('topbar.restore')}
               icon="pi pi-upload"
-              className="p-button-sm p-button-outlined p-button-warning"
+              className="p-button-sm p-button-outlined p-button-warning topbar-btn"
               onClick={() => fileInputRef.current?.click()}
               disabled={busy}
               tooltip={t('topbar.restore_tip')}
@@ -286,7 +345,7 @@ export default function Dashboard() {
         <ConfirmDialog />
 
         {/* Page content */}
-        <main style={{ flex: 1, overflow: 'auto', padding: '20px 24px' }}>
+        <main className="page-main" style={{ flex: 1, overflow: 'auto', padding: '20px 24px' }}>
           <Outlet />
         </main>
       </div>

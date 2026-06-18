@@ -163,7 +163,7 @@ export default function Payments() {
         <div style={{ background: '#f0f4ff', border: '1px solid #c5cae9', borderRadius: 8, padding: '14px 16px' }}>
           
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 200px auto', gap: 12, alignItems: 'flex-end' }}>
+          <div className="entry-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 200px auto', gap: 12, alignItems: 'flex-end' }}>
             <div className="flex flex-column gap-1">
               <label style={{ fontSize: 12, fontWeight: 600, color: '#555' }}>Customer</label>
               <AutoComplete

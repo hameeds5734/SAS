@@ -172,6 +172,15 @@ function buildMenu() {
 
 app.whenReady().then(async () => {
   try {
+    // Purge the HTTP cache on every launch. Costs ~50ms and guarantees that a
+    // fresh build's hashed chunks aren't poisoned by a cached old index.html
+    // / main.<hash>.js pair from a previous build.
+    try {
+      const { session } = require('electron');
+      await session.defaultSession.clearCache();
+      await session.defaultSession.clearStorageData({ storages: ['shadercache', 'serviceworkers', 'cachestorage'] });
+    } catch (_) {}
+
     await startBackend();
     buildMenu();
     createWindow();

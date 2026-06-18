@@ -22,19 +22,66 @@ app.use('/api/admin',         require('./routes/admin'));
 
 app.get('/api/health', (_req, res) => res.json({ status: 'ok' }));
 
+// Returns the machine's LAN IPv4 addresses so the UI can display
+// "Mobile: http://192.168.x.x:5000" for the user to type into their phone.
+app.get('/api/network', (_req, res) => {
+  const port = parseInt(process.env.PORT, 10) || 5000;
+  const ips = [];
+  for (const list of Object.values(os.networkInterfaces())) {
+    for (const ni of list || []) {
+      if (ni.family === 'IPv4' && !ni.internal) ips.push(ni.address);
+    }
+  }
+  res.json({ port, ips, urls: ips.map(ip => `http://${ip}:${port}`) });
+});
+
 // ---- Serve the React production build (when it exists) ----
-// In packaged Electron, build/ lives at: <install>/resources/app.asar/build
-// In a `node server/server.js` run from the repo, it lives at: <repo>/build
-const buildCandidates = [
-  path.join(__dirname, '..', 'build'),
-  path.join(process.resourcesPath || '', 'app.asar', 'build'),
-];
-const buildDir = buildCandidates.find(p => p && fs.existsSync(path.join(p, 'index.html')));
+// Lookup rule:
+//   - In packaged Electron, __dirname lives inside app.asar. We MUST serve
+//     static assets from the unpacked sibling (app.asar.unpacked/build) —
+//     express.static reads files via fs.createReadStream which can't open
+//     a virtual asar entry reliably.
+//   - In dev (`node server/server.js`), use the plain build/ sibling.
+function resolveBuildDir() {
+  const localBuild = path.join(__dirname, '..', 'build');
+  if (localBuild.includes('app.asar') && !localBuild.includes('app.asar.unpacked')) {
+    const unpacked = localBuild.replace(/app\.asar(?=[\\/])/, 'app.asar.unpacked');
+    if (fs.existsSync(path.join(unpacked, 'index.html'))) return unpacked;
+  }
+  if (fs.existsSync(path.join(localBuild, 'index.html'))) return localBuild;
+  return null;
+}
+const buildDir = resolveBuildDir();
 
 if (buildDir) {
-  app.use(express.static(buildDir, { maxAge: '7d', index: 'index.html' }));
-  // Client-side-routing fallback: anything that isn't /api/* gets index.html.
-  app.get(/^\/(?!api\/).*/, (_req, res) => {
+  app.use(express.static(buildDir, {
+    index: 'index.html',
+    setHeaders: (res, filePath) => {
+      // index.html must never be cached — it's the entry point that names the
+      // current main.<hash>.js. A cached stale index.html keeps pointing at
+      // chunks that no longer exist after a rebuild → ChunkLoadError.
+      if (filePath.endsWith('index.html')) {
+        res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+        res.setHeader('Pragma', 'no-cache');
+        res.setHeader('Expires', '0');
+      } else if (/\.[a-f0-9]{8,}\./.test(filePath)) {
+        // Content-hashed filename (main.abc12345.js, etc.) — safe forever.
+        res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+      } else {
+        res.setHeader('Cache-Control', 'public, max-age=86400');
+      }
+    },
+  }));
+
+  // Only serve index.html for real navigations — never for missing assets.
+  // An asset request (with a file extension or under /static/) that the static
+  // middleware couldn't satisfy is a genuine 404; returning index.html instead
+  // would corrupt the JS chunk loader with HTML and trigger
+  //   "Uncaught SyntaxError: Unexpected token '<'"
+  app.get(/^\/(?!api\/).*/, (req, res, next) => {
+    const looksLikeAsset = /\.[a-zA-Z0-9]{2,5}$/.test(req.path) || req.path.startsWith('/static/');
+    if (looksLikeAsset) return res.status(404).send('Not found: ' + req.path);
+    if (!req.accepts('html')) return next();
     res.sendFile(path.join(buildDir, 'index.html'));
   });
   console.log(`[server] serving React build from ${buildDir}`);

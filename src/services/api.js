@@ -6,6 +6,10 @@ import axios from 'axios';
 //   - CRA dev (npm start): forwarded to localhost:5000 via package.json "proxy"
 const API = axios.create({ baseURL: process.env.REACT_APP_API_URL || '/api' });
 
+export const networkApi = {
+  getInfo: () => API.get('/network'),
+};
+
 export const adminApi = {
   backup: () => API.post('/admin/backup'),
   listBackups: () => API.get('/admin/backups'),

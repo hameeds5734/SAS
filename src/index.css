@@ -33,6 +33,110 @@ body.lang-ta .p-datatable .p-datatable-tbody > tr > td {
   font-family: 'Bamini', 'Latha', 'Nirmala UI', system-ui, sans-serif;
 }
 
+/* ─── Mobile responsive (≤ 768px) ───────────────────────────────────────────
+   These rules only fire on small viewports — the desktop layout is untouched. */
+@media (max-width: 768px) {
+  body { overflow-x: hidden; }
+
+  /* Dialogs — never wider than the viewport */
+  .p-dialog {
+    width: 96vw !important;
+    max-width: 96vw !important;
+    margin: 0 !important;
+  }
+  .p-dialog .p-dialog-content { padding: 12px !important; }
+  .p-dialog .p-dialog-header  { padding: 12px !important; font-size: 14px !important; }
+
+  /* DataTables — horizontal scroll instead of breaking layout */
+  .p-datatable-wrapper { overflow-x: auto !important; -webkit-overflow-scrolling: touch; }
+  .p-datatable .p-datatable-tbody > tr > td,
+  .p-datatable .p-datatable-thead > tr > th {
+    padding: 0.5rem 0.6rem !important;
+    font-size: 12.5px !important;
+    white-space: nowrap;
+  }
+
+  /* Cards — tighter padding so content has more room */
+  .p-card .p-card-body { padding: 0.75rem !important; }
+
+  /* TabView — let tab strip scroll horizontally instead of wrapping */
+  .p-tabview .p-tabview-nav {
+    flex-wrap: nowrap !important;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .p-tabview .p-tabview-nav li { flex-shrink: 0; }
+  .p-tabview .p-tabview-nav-link { padding: 0.75rem 0.85rem !important; font-size: 13px !important; }
+
+  /* Cards we use in pages — full width, less margin */
+  .p-card { margin-bottom: 12px !important; }
+
+  /* PrimeReact inputs — fluid */
+  .p-inputtext, .p-dropdown, .p-multiselect, .p-autocomplete, .p-calendar, .p-inputnumber {
+    width: 100% !important;
+  }
+  .p-autocomplete input, .p-inputnumber input { width: 100% !important; }
+
+  /* Buttons — generous tap targets */
+  .p-button { min-height: 38px; }
+  .p-button.p-button-sm { min-height: 34px; }
+
+  /* Hide topbar button labels on mobile — icons only */
+  .topbar-btn .p-button-label { display: none !important; }
+  .topbar-btn { padding: 6px 9px !important; min-width: 36px !important; }
+
+  /* Filter grids inside reports / master data — force single column */
+  .filter-grid {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+  .entry-grid {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+  }
+
+  /* Sidebar becomes an off-canvas drawer.
+     !important on z-index is critical — the inline JSX style sets zIndex:100,
+     which would otherwise put the sidebar BELOW the backdrop and swallow taps. */
+  .sidebar {
+    position: fixed !important;
+    left: 0; top: 0; bottom: 0;
+    width: 220px !important;
+    min-width: 220px !important;
+    transform: translateX(-100%);
+    transition: transform 0.22s ease !important;
+    z-index: 1200 !important;
+  }
+  .sidebar.is-open { transform: translateX(0); }
+
+  /* Backdrop when drawer is open */
+  .sidebar-backdrop {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.45);
+    z-index: 1090;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+  }
+  .sidebar-backdrop.is-open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* Show hamburger only on mobile */
+  .mobile-hamburger { display: inline-flex !important; }
+  .topbar { padding: 0 12px !important; gap: 6px !important; }
+  .topbar .topbar-actions { gap: 4px !important; }
+
+  /* Page main area — remove side gutters */
+  .page-main { padding: 12px !important; }
+
+  /* Print-friendly reports stay the same; thermal print rules already handle width */
+}
+
+/* On desktop the hamburger doesn't exist — keep it hidden */
+.mobile-hamburger { display: none; }
+
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: #f1f1f1; }
 ::-webkit-scrollbar-thumb { background: #bbb; border-radius: 3px; }

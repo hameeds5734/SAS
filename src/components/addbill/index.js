@@ -186,7 +186,7 @@ export default function Addbill() {
         </div>
 
         {/* Date + Customer */}
-        <div style={{ display: 'grid', gridTemplateColumns: '180px 1fr', gap: 16, marginBottom: 20 }}>
+        <div className="entry-grid" style={{ display: 'grid', gridTemplateColumns: '180px 1fr', gap: 16, marginBottom: 20 }}>
           <div className="flex flex-column gap-1">
             <label style={{ fontSize: 13, fontWeight: 600, color: '#555' }}>Bill Date</label>
             <Calendar value={billDate} onChange={e => setBillDate(e.value)} dateFormat="dd-mm-yy" showIcon style={{ width: '100%' }} />
@@ -216,7 +216,7 @@ export default function Addbill() {
         <div style={{ background: '#f0f4ff', border: '1px solid #c5cae9', borderRadius: 8, padding: '14px 16px', marginBottom: 14 }}>
           
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 120px 140px auto', gap: 12, alignItems: 'flex-end' }}>
+          <div className="entry-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 120px 140px auto', gap: 12, alignItems: 'flex-end' }}>
             <div className="flex flex-column gap-1">
               <label style={{ fontSize: 12, fontWeight: 600, color: '#555' }}>Product Name</label>
               <AutoComplete
